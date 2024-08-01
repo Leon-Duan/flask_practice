@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}DL-主页{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header class="header">
+        <h1>这  里  是  主  页</h1>
+        <nav class="top-nav">
+            <ul>
+                {% if g.user %}
+                    <li><span>{{g.user['username']}}</span></li>
+                    <li><a href="{{ url_for('auth.logout') }}">退出</a></li>
+                {% else %} 
+                    <li><a href="{{ url_for('auth.register') }}">注册</a>    |     <a href="{{ url_for('auth.login') }}">登录</a></li>
+        
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+    
+    <main class="main-content">
+        <header>
+            {% block header %}{% endblock %}
+        </header>
+        {% for meesage in get_flashed_messages() %}
+            <div class="flash">{{ message }}</div>
+        {% endfor %}
+        {% block content %}
+            <!-- 页面主要内容区域 -->
+        {% endblock %}
+    </main>
+</body>
+</html>

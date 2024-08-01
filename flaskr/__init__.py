@@ -1,10 +1,10 @@
 import os
 
-from flask import Flask
+from flask import Flask,render_template
 
 def create_app(test_config=None):
     #创建app
-    app = Flask(__name__, instance_relative_config=True)   # name是名字，后面表示添加一些内容给app吗，是的
+    app = Flask(__name__, instance_relative_config=True)   # name是代表了该实例，后面表示添加一些内容给app吗，是的
     app.config.from_mapping(   #map 是映射，可以理解为字典，这里就是说默认传给app一些内容，是字典的形式，
                                #SECRET_KEY是密钥，DATABASE是数据库                              
         SECRET_KEY='dev',   
@@ -25,7 +25,10 @@ def create_app(test_config=None):
     #简单的初始页面
     @app.route('/')
     def hello():
-        return 'Hello, World!'
+        return render_template('base.html')
+    
+    from . import auth
+    app.register_blueprint(auth.bp)
     
     from . import db
     db.init_app(app)  #确保每次操作后关闭数据库连接
